@@ -20,46 +20,26 @@ wss.on('connection', (ws, req) => {
   allConnections.push(ws)
 
   ws.on('close', function close(){
+
+  // allConnections.forEach(client => {
+  //     if (client !== ws){
+  //       client.send(payload)
+  //     }
+  //   })
+
     let index = allConnections.indexOf(ws)
     if (index > -1) {
       allConnections.splice(index, 1);
     }
-    // lobbies.forEach(lobby => {
-    //   let socketIndex = lobby.indexOf(ws)
-    //   if (socketIndex > -1){
-    //     lobby.splice(socketIndex, 1)
-    //   }
-    // })
   })
 
   ws.on('message', (payload) => {
-    console.log('hello')
     allConnections.forEach(client => {
         if (client !== ws){
           client.send(payload)
         }
       })
     })
-
-  // ws.on('message', (payload) => {
-  //   // lastMessage = payload
-  //   lobbies.forEach(lobby => {
-  //     if (lobby.includes(ws)){
-  //       lobby.forEach(socket => {
-  //         if (socket !== ws){
-  //           socket.send(`${payload}`)
-  //         }
-  //       })
-  //     }
-  //   })
-  // })
 })
-
-
-// let broadcast = (data) => {
-//   server.clients.forEach(client => {
-//     client.send(data)
-//   })
-// }
 
 console.log("LISTENING FOR WS CONNECTIONS ON PORT: ", PORT);
